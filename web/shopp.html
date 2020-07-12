@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <script type="text/javascript">
+        var t = null;
+        function time(){
+            dt = new Date();
+            var y=dt.getFullYear();
+            var h=dt.getHours();
+            var m=dt.getMinutes();
+            var s=dt.getSeconds();
+            document.getElementById("timeShow").innerHTML="当前时间："+y+"年"+h+"时"+m+"分"+s+"秒";
+            t = setTimeout(time,1000);
+        }
+        window.onload=function(){time()}
+    </script>
+</head>
+<style type="text/css">
+    h1{
+        text-align: center;
+    }
+    table{
+        margin: 0 auto;
+    }
+    body{
+        font-size: larger;color: red;
+        background-image: url(shopp.jpg);
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+    table th,table td{
+
+    }
+</style>
+<body >
+<h1>Mrzhang高级商品区</h1>
+<table border="1" >
+    <tr>
+        <!--文本th-->
+        <th>图片</th>
+        <th>目前在售商品</th>
+        <th  >单价</th>
+
+        <th>库存</th>
+        <th>好评率</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><img  src="i910010k.jpg" width="100"height="100"></td>
+        <td>i9-10900k搭华硕Z490主板套装</td>
+
+        <td  >6500</td>
+
+        <td>99</td>
+        <td>99%</td>
+
+        <td align="center">
+            <input type="button" value="加入购物车" onclick="add_shoppingcar(this)"/>
+        </td>
+    </tr>
+    <tr>
+        <td><img  src="400p.jpg" width="100"height="100"></td>
+        <td>傲腾900p-480G固态硬盘</td>
+
+        <td>4200</td>
+
+        <td>99</td>
+        <td>82%</td>
+
+        <td align="center">
+            <input type="button" value="加入购物车" onclick="add_shoppingcar(this)"/>
+        </td>
+    </tr>
+    <tr>
+        <td><img  src="r53600.jpg" width="100"height="100"></td>
+
+        <td>AMDR5-3600X搭微星B450主板套餐</td>
+
+        <td >2000</td>
+
+        <td>99</td>
+        <td>99.99%</td>
+
+        <td align="center">
+            <input type="button" value="加入购物车" onclick="add_shoppingcar(this)"/>
+        </td>
+    </tr>
+    <tr>
+        <td><img  src="rog4.jpg" width="100"height="100"></td>
+
+        <td>ROG魔霸4搭十代酷睿i7</td>
+
+        <td  >11000</td>
+
+        <td>99</td>
+        <td>90%</td>
+
+        <td align="center">
+            <input type="button" value="加入购物车" onclick="add_shoppingcar(this)"/>
+        </td>
+    </tr>
+</table>
+<h1> 付款吧</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>图片</th>
+        <th>商品</th>
+        <th >单价</th>
+        <th>数量</th>
+        <th>金额</th>
+        <th>删除</th>
+    </tr>
+    </thead>
+    <tbody id="goods">
+
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3" align="center" >总计</td>
+        <td id="total"></td>
+        <td>元</td>
+    </tr>
+    </tfoot>
+</table>
+</body>
+<script type="text/javascript">
+    function add_shoppingcar(btn){
+        var tr=btn.parentNode.parentNode;
+        var tds=tr.getElementsByTagName("td");
+        var src = tds[0].firstChild.src;
+        var name=tds[1].innerHTML;
+        var price=tds[2].innerHTML;
+        var tbody=document.getElementById("goods");
+        var row=tbody.insertRow();//insertRow表格开头插入新行
+        row.innerHTML="<td><img src='"+src+"' width=\"100px\" height=\"100px\"></td>"+"<td>"+name+"</td>"+
+            "<td>"+price+"</td>"+
+            "<td align='center'>"+
+            "<input type='button' value='-' id='jian'  onclick='change(this,-1)'  />"+
+            "<input id='text' type='text' size='1' value='1' readonly='readonly' />"+
+            "<input type='button' value='+' id='add'  onclick='change(this,1)'  />"+
+            "</td>"+
+            "<td>"+price+"</td>"+
+            "<td align='center'>"+
+            "<input type='button' value='X' onclick='del(this)'/>"+
+            "</td>"+
+            "</tr>"
+        total();
+    }
+    function change(btn,n){
+        var inputs = btn.parentNode.getElementsByTagName("input");
+        var amount = parseInt(inputs[1].value);
+        if(amount<=1 && n<0){
+            return;
+        }
+        inputs[1].value = amount + n;
+        amount = inputs[1].value;
+        var tr = btn.parentNode.parentNode;
+        var tds = tr.getElementsByTagName("td");
+        var price = parseFloat(tds[2].innerHTML);
+        var m = price * amount;
+        tds[4].innerHTML = m;
+        total();
+    }
+
+
+    function total(){
+        var tbody=document.getElementById("goods");
+        var trs=tbody.getElementsByTagName("tr");
+        var sum=0;
+        for(var i=0;i<trs.length;i++){
+            var tds=trs[i].getElementsByTagName("td");
+            var m=tds[4].innerHTML;
+            sum += parseFloat(m);
+        }
+        var total=document.getElementById("total");
+        total.innerHTML = sum;
+    }
+    function del(i){
+        var tr=i.parentNode.parentNode;
+        tr.parentNode.removeChild(tr);
+        //tr.remove(tr);
+        total();
+    }
+
+</script>
+<div id="timeShow"></div>
+</html>
